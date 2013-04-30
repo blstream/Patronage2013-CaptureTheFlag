@@ -35,6 +35,8 @@ namespace Ctf
             // Language display initialization
             InitializeLanguage();
 
+            ApplicationSettings a = ApplicationSettings.Instance;
+
             // Show graphics profiling information while debugging.
             if (Debugger.IsAttached)
             {

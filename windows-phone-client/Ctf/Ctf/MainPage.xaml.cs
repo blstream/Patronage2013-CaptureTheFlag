@@ -8,6 +8,8 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Ctf.Resources;
+using System.Diagnostics;
+
 
 namespace Ctf
 {
@@ -20,6 +22,39 @@ namespace Ctf
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
+            ApplicationSettings.Instance.UserChanged += UserHasChanged;
+        }
+
+        public void UserHasChanged(object sender, EventArgs e)
+        {
+            Debug.WriteLine("AppSett EVENT!. User has changed.");
+        }
+
+        private async void LoginTest(object sender, RoutedEventArgs e)
+        {
+            Login Logger = new Login();
+            Debug.WriteLine(Logger.LoggedAs());
+
+            //await Logger.logInAs(new UserCredentials("piotrekm44@o2.pl", "weakPassword"), "secret");
+            await Logger.LogInAs(new UserCredentials("abcdef", "abcdef"), "secret");
+            //TODO: NullPointerException
+            //if(Logger.loggedAs().username != null)
+            //    Debug.WriteLine(Logger.loggedAs().username);
+        }
+
+        private async void RegisterTest(object sender, RoutedEventArgs e)
+        {
+            Registration Register = new Registration();
+            await Register.Register(new UserCredentials("abcdef", "abcdef"), "abcdef");
+        }
+
+        private void LogoutTest(object sender, RoutedEventArgs e)
+        {
+            Login Logger = new Login();
+            if (Logger.LogOut())
+                Debug.WriteLine("Logout SUCCESSFUL");
+            else
+                Debug.WriteLine("Logout FAILED");
         }
 
         // Sample code for building a localized ApplicationBar
@@ -37,5 +72,29 @@ namespace Ctf
         //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
         //    ApplicationBar.MenuItems.Add(appBarMenuItem);
         //}
+
+        private void MakeTestUserCredentials()
+        {
+            UserCredentials user = null;
+            string username = "aaaaaaaa";
+            string password = "bbbbb";
+            try
+            {
+                user = new UserCredentials(username, password);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Exception: " + ex.Message);
+            }
+            if (user != null)
+            {
+                Debug.WriteLine("username: " + user.GetUsername());
+                Debug.WriteLine("password: " + user.GetPassword());
+            }
+            if (user.HasMatchingPassword(password))
+                Debug.WriteLine("match: " + user.GetPassword() + " == " + password);
+            if (user.HasMatchingPassword(username))
+                Debug.WriteLine("match: " + user.GetPassword() + " == " + username);
+        }
     }
 }
