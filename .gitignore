@@ -6,7 +6,9 @@ CaptureTheFlag.xcscheme
 UserInterfaceState.xcuserstate
 *.ipa
 /windows-phone-client/Ctf/Ctf/Bin
+/windows-phone-client/Ctf/CtfTest/Bin
 
 /windows-phone-client/Ctf/Ctf/obj
+/windows-phone-client/Ctf/CtfTest/obj
 *.user
 *.suo

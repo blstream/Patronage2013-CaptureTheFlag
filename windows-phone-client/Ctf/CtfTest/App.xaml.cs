@@ -6,9 +6,9 @@ using System.Windows.Markup;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using Ctf.Resources;
+using CtfTest.Resources;
 
-namespace Ctf
+namespace CtfTest
 {
     public partial class App : Application
     {
@@ -34,8 +34,6 @@ namespace Ctf
 
             // Language display initialization
             InitializeLanguage();
-
-            ApplicationSettings a = ApplicationSettings.Instance;
 
             // Show graphics profiling information while debugging.
             if (Debugger.IsAttached)
