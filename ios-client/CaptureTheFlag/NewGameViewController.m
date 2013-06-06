@@ -8,6 +8,7 @@
 
 #import "NewGameViewController.h"
 #import "CTFGame.h"
+#import <AddressBookUI/AddressBookUI.h>
 
 
 @interface NewGameViewController ()
@@ -18,7 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIPickerView *gamePicker;
 @property (weak, nonatomic) IBOutlet UITextField *gameRedName;
 @property (weak, nonatomic) IBOutlet UITextField *gameBlueName;
-@property (strong, nonatomic) NSString *locationNameFromGeo;
+@property (strong, nonatomic) NSString *addres;
 @property (strong, nonatomic) CLLocation *gameLocation;
 @property (strong, nonatomic) CLLocation *redTeamBaseLocalization;
 @property (strong, nonatomic) CLLocation *blueTeamBaseLocalization;
@@ -69,14 +70,13 @@ int counter;
 
 - (void)mapView:(MKMapView *)mapView1 regionDidChangeAnimated:(BOOL)animated
 {
-  //  NSNumber *radius [[NSNumber alloc] initWithInt:([span.latitudeDelta*111*1000/2])];
     if (![self.locationField.text isEqualToString:@""]) {
     [self.mapView removeOverlays:self.mapView.overlays];
     [self removeAllAnnotations];
     MKCoordinateSpan span = _mapView.region.span;
     CLLocationCoordinate2D centre = [_mapView centerCoordinate];
     MKCircle *circle = [MKCircle circleWithCenterCoordinate:centre radius:span.latitudeDelta*111*1000/2];
-    NSNumber *gameRadius = [NSNumber numberWithDouble:(circle.radius)];
+    self.gameRadius = [NSNumber numberWithDouble:(circle.radius)];
     [_mapView addOverlay:circle];
     
     MKPointAnnotation *annotationPoint = [[MKPointAnnotation alloc] init];
@@ -86,6 +86,7 @@ int counter;
     MKCoordinateRegion region =
     MKCoordinateRegionMakeWithDistance(centre, span.latitudeDelta*111*1000, span.latitudeDelta*111*1000);
     [_mapView setRegion:region animated:YES];
+    counter=0;
 }
     else
 {
@@ -101,6 +102,8 @@ int counter;
 
 - (IBAction)geolocate:(id)sender
 {
+    [self.mapView removeOverlays:self.mapView.overlays];
+    [self removeAllAnnotations];
     [self.geocoder geocodeAddressString:self.locationField.text
                       completionHandler:^(NSArray *coordinates, NSError
                                           *error) {
@@ -108,12 +111,8 @@ int counter;
                           {
                               CLPlacemark *placemark = coordinates[0];
                               CLLocation *coordinate = placemark.location;
-                              NSString *locationCityNameFromGeo = placemark.subLocality;
-                              NSString *locationName = placemark.name;
-                              NSString *locationCountryNameFromGeo = placemark.country;
-                              CLLocation *gameLocation = [[CLLocation alloc] initWithLatitude:coordinate.coordinate.latitude
+                              self.gameLocation = [[CLLocation alloc] initWithLatitude:coordinate.coordinate.latitude
                                                                         longitude:coordinate.coordinate.longitude];
-                              NSString *locationNameFromGeo = [NSString stringWithFormat:@"%@, %@, %@", locationName, locationCityNameFromGeo, locationCountryNameFromGeo];
                               MKCircle *circle = [MKCircle circleWithCenterCoordinate:coordinate.coordinate radius:450];
                               [_mapView addOverlay:circle];
                               
@@ -125,6 +124,11 @@ int counter;
                               MKCoordinateRegionMakeWithDistance (
                                                                   coordinate.coordinate, 800, 800);
                               [_mapView setRegion:region animated:YES];
+                              NSDictionary *addressDictionary = placemark.addressDictionary;
+                              NSString* address =
+                              ABCreateStringWithAddressDictionary(addressDictionary, NO);
+                              self.addres = [address
+                                         stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
                           }
                           else
                           {
@@ -144,6 +148,15 @@ int counter;
     }
     else if (textField == self.locationField) {
         [textField resignFirstResponder];
+        [self geolocate:(nil)];
+    }
+    else if (textField == self.gameRedName) {
+        [textField resignFirstResponder];
+        [self.gameBlueName becomeFirstResponder];
+    }
+    else if (textField == self.gameBlueName) {
+        [textField resignFirstResponder];
+        [self createNewGame:nil];
     }
 
     return YES;
@@ -153,6 +166,8 @@ int counter;
     [_gameName resignFirstResponder];
     [_gameDescription resignFirstResponder];
     [_locationField resignFirstResponder];
+    [_gameRedName resignFirstResponder];
+    [_gameBlueName resignFirstResponder];
 }
 
 - (void)mapView:(MKMapView *)mapView
@@ -260,7 +275,7 @@ didUpdateUserLocation:
         id userAnnotation = self.mapView.userLocation;
         NSMutableArray *annotations = [NSMutableArray arrayWithArray:self.mapView.annotations];
         [annotations removeObject:userAnnotation];
-        [annotations removeObjectAtIndex:0];
+        [annotations removeObjectAtIndex:1];
         [self.mapView removeAnnotations:annotations];
    
     }
@@ -282,27 +297,26 @@ didUpdateUserLocation:
         playersMaxFromPicker = [_secondColumnList objectAtIndex:row2];
         myNewGame.pointsMax = [NSNumber numberWithInteger:[pointsMaxFromPicker integerValue]];
         myNewGame.playersMax = [NSNumber numberWithInteger:[playersMaxFromPicker integerValue]];
-        myNewGame.localizationName = _locationNameFromGeo;
+        myNewGame.localizationName = _addres;
         myNewGame.localization = _gameLocation;
         myNewGame.localizationRadius = _gameRadius;
         myNewGame.redTeamBaseName = _gameRedName.text;
         myNewGame.redTeamBaseLocalization = _redTeamBaseLocalization;
         myNewGame.blueTeamBaseName = _gameBlueName.text;
         myNewGame.blueTeamBaseLocalization =_blueTeamBaseLocalization;
-        NSLog(@"%@nazwa", _locationNameFromGeo);
-        NSLog(@"%@lokacja", _gameLocation);
-    
-   /* [[NetworkEngine getInstance] createNewGame:myNewGame completionBlock:^(NSObject *response){
-    createNewGame:myNewGame
-    completionBlock:^(NSObject *response) {
+   
+    [[NetworkEngine getInstance] createNewGame:myNewGame completionBlock:^(NSObject *response){
         if ([response isKindOfClass:[NSError class]])
         {
+            [ShowInformation showError:@"Failed to create a new game!"];
         }
         else
         {
+            [ShowInformation showError:@"Game created sucesfully!"];
         }
-    }}];
-*/}
+
+    }];
+}
 
 
 @end
