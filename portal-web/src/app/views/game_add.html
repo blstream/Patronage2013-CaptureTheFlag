@@ -1,0 +1,137 @@
+<div class="container" ng-show="Signed" ng-controller="GamesCtrl">
+    <div class="row">
+            
+        <form class="ng-valid ng-dirty form-addGame" name="addGameForm" ng-submit="AddGame()">
+            <h2>Add game</h2>
+            
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="game_name">Name</label>
+                <div class="col-sm-10">
+                    <input class="form-control ng-valid ng-dirty" type="text" required class="input-block-level" placeholder="Game name" ng-model="game_name" name="game_name">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="game_name">Description</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control ng-valid ng-dirty" required rows="3" placeholder="Description" ng-model="game_description" name="game_description"></textarea>
+                    <!-- input class="form-control ng-valid ng-dirty" type="text" required class="input-block-level" placeholder="Description" ng-model="game_description" name="game_description"-->
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="game_name">Time</label>
+                <!--div class="col-sm-10 input-append">
+                </div>
+                <script>
+                    $('.input-append input').datepicker({
+                    	format: 'yyyy-mm-dd'
+                    });
+                </script-->
+                <div class="input-daterange col-sm-10" id="datepicker">
+                    <input type="text" class="form-control ng-valid ng-dirty date pull-left" required name="time_start" placeholder="Time start" ng-model="time_start" id="time_start" />
+                    <span class="add-on pull-left">to</span>
+                    <input type="text" class="form-control ng-valid ng-dirty date pull-left" required name="time_stop" placeholder="Time stop" ng-model="time_stop" id="time_stop" />
+                </div>
+
+                <script>
+                    $('#datepicker').datepicker({
+                        format: 'yyyy-mm-dd',
+                        autoclose: true
+                    });
+                    $('.input-daterange input.date').on('change', function() {
+                        var date1_ms = new Date($('#time_start').val()).getTime()
+                        var date2_ms = new Date($('#time_stop').val()).getTime()
+                        var difference_ms = Math.abs(date1_ms - date2_ms)
+                        $('#game_duration').val(difference_ms / 1000).change().blur()
+                        $('#game_time_start').val($('#time_start').val() + ' 00:00:00').change().blur()
+                    })
+                </script>
+            </div>
+            
+             <div class="form-group">
+                <label class="control-label col-sm-2" for="game_name">Points max</label>
+                <div class="col-sm-2">
+                    <input class="form-control ng-valid ng-dirty" type="text" required class="input-block-level" placeholder="Points max" ng-model="game_points_max" name="game_points_max">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="game_name">Players max</label>
+                <div class="col-sm-2">
+                    <input class="form-control ng-valid ng-dirty" type="text" required class="input-block-level" placeholder="Players max" ng-model="game_players_max" name="game_players_max">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="game_name">Circle radius (m)</label>
+                <div class="col-sm-2">
+                    <input class="form-control ng-valid ng-dirty" type="text" required class="input-block-level" placeholder="Circle radius" ng-model="game_localization_radius" name="game_localization_radius">
+                </div>
+            </div>
+
+            <div data-ng-init="initMap()">
+                <div id="map-canvas"></div>
+                <div id="game-controls">
+                    <div id="left">
+                        <div class="optionGroup">
+                            <input type="button" class="btn btn-success" value="Draw circle" ng-click="drawCircle()" />
+                            <input type="button" class="btn btn-warning" value="Remove circle" ng-click="reset()" />
+                        </div>
+                        <div class="optionGroup">
+                            <input type="button" class="btn btn-success" value="Set random markers" ng-click="placeMarkersRandom()" />
+                            <!-- input type="radio" class="mOption" name="placeMarkers" value="auto" checked="checked" />Auto
+                            <input type="radio" class="mOption" name="placeMarkers" value="manual" />Manual-->
+                            <input type="button" class="btn btn-warning" value="Remove markers" ng-click="clearMarkers()" />
+                        </div>
+                        <div class="optionGroup">
+                           
+                            
+                        </div>
+                    </div>
+                    <!-- div id="right">
+                        <div class="optionGroup">
+                            <span class="mOption">Idź do: </span>
+                            <input type="button" class="mOption" value="[okrąg]" ng-click="viewCircle()" />
+                            <input type="button" class="mOption" value="[Szczecin - centrum]" ng-click="viewStart()" />
+                        </div>
+                    </div-->
+                </div>
+            </div>
+            <div class="clear"></div>
+            
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="game_name">Localization name</label>
+                <div class="col-sm-10">
+                    <input class="form-control ng-valid ng-dirty" type="text" required class="input-block-level" placeholder="Localization name" ng-model="game_localization_name" name="game_localization_name" id="game_localization_name">
+                </div>
+            </div>
+            
+            <div class="form-group clearfix setBase">
+                <label class="control-label col-sm-2" for="game_name">Red team base name</label>
+                <div class="col-sm-10">
+                    <input class="form-control ng-valid ng-dirty" type="text" required class="input-block-level" placeholder="Red team base name" ng-model="game_red_team_base_name" name="game_red_team_base_name">
+                    <input type="button" class="btn btn-danger" value="Set red team base" ng-click="setRedTeamBase()" />
+                </div>
+            </div>
+            
+            <div class="form-group clearfix setBase">
+                <label class="control-label col-sm-2" for="game_name">Blue team base name</label>
+                <div class="col-sm-10">
+                    <input class="form-control ng-valid ng-dirty" type="text" required class="input-block-level" placeholder="Blue team base name" ng-model="game_blue_team_base_name" name="game_blue_team_base_name">
+                    <input type="button" class="btn btn-primary" value="Set blue team base" ng-click="setBlueTeamBase()" />
+                </div>
+            </div>
+            
+            <input class="form-control ng-valid ng-dirty" type="hidden" required class="input-block-level" ng-model="game_time_start" name="game_time_start" id="game_time_start">
+            <input class="form-control ng-valid ng-dirty" type="hidden" required class="input-block-level" placeholder="Duration" ng-model="game_duration" name="game_duration" id="game_duration">
+            <input class="form-control ng-valid ng-dirty" type="hidden" required class="input-block-level" placeholder="game_localization_latLng" ng-model="game_localization_latLng" name="game_localization_latLng" id="game_localization_latLng">
+            <input class="form-control ng-valid ng-dirty" type="hidden" required class="input-block-level" placeholder="game_red_team_base_name_latLng" ng-model="game_red_team_base_latLng" name="game_red_team_base_latLng" id="game_red_team_base_latLng">
+            <input class="form-control ng-valid ng-dirty" type="hidden" required class="input-block-level" placeholder="game_blue_team_base_latLng" ng-model="game_blue_team_base_latLng" name="game_blue_team_base_latLng" id="game_blue_team_base_latLng">
+
+            <button class="btn btn-lg btn-primary btn-block" type="Add">Add game</button>
+        </form>
+
+
+    </div>
+</div>

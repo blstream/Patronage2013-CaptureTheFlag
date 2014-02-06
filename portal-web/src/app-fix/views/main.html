@@ -1,0 +1,34 @@
+<!-- Main hero unit for a primary marketing message or call to action -->
+<div class="container" ng-hide="Signed">
+	<div class="row">
+            
+		<form class="ng-valid ng-dirty form-register" novalidate name="registerForm" ng-submit="RegisterUser()">
+            <h2>Register</h2>
+            <div ng-class="{'has-error': registerForm.r_username.$error.required && registerForm.r_username.$dirty}">
+                <input class="form-control login" type="text" required class="input-block-level" placeholder="Login" ng-model="r_username" name="r_username">
+                <span class="help-block" data-ng-show="registerForm.r_username.$error.required && registerForm.r_username.$dirty">Login is required.</span>
+            </div>
+            <div ng-class="{'has-error': registerForm.r_password.$error.required && registerForm.r_password.$dirty}">
+                <input class="form-control ng-valid ng-dirty passwd" type="password" required class="input-block-level" placeholder="Password" ng-model="r_password" name="r_password" >
+                <span class="help-block" data-ng-show="registerForm.r_password.$error.required && registerForm.r_password.$dirty">Password is required.</span>
+            </div>
+            <div ng-class="{'has-error': registerForm.r_password2.$error.required && registerForm.r_password2.$dirty}">
+                <input class="form-control ng-valid ng-dirty passwd2" type="password" required class="input-block-level" placeholder="Confirm Password" ng-model="r_password2" name="r_password2" data-ng-match="r_password">
+                <span class="help-block" data-ng-show="registerForm.r_password2.$error.required && registerForm.r_password2.$dirty">Confirm password is required.</span>
+                <span class="help-block" data-ng-show="registerForm.r_password2.$error.match">Passwords do not match.</span>
+            </div>
+			<button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="!registerForm.$valid">Register</button>
+        </form>
+
+    </div>
+</div>
+
+<div class="container" ng-show="Signed">
+    <div class="jumbotron">
+        <h1>Capture the Flag</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rutrum imperdiet erat sed viverra. Nulla quis est tellus. Nam pellentesque neque at venenatis convallis. Sed nec mollis augue. Proin dignissim justo at risus posuere, ac auctor elit tristique. Fusce eu mattis erat. Praesent dui justo, auctor ut interdum non, fringilla sed metus. Proin elementum luctus augue, quis hendrerit tortor porta eu. Nam at mi vehicula, laoreet velit elementum, suscipit mi. Aenean aliquam dapibus nunc, id semper sapien convallis vel. Pellentesque venenatis, urna eget pulvinar volutpat, ante lectus sollicitudin nibh, id consequat lacus risus eu velit. Vivamus sed justo augue. Proin scelerisque elit non enim faucibus, eget suscipit risus tempor. </p>
+        <p>
+          <a role="button" href="#add_game" class="btn btn-lg btn-default">Create game »</a>
+        </p>
+      </div>
+</div>

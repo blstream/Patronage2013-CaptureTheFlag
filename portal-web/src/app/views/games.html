@@ -1,0 +1,85 @@
+<!-- Main hero unit for a primary marketing message or call to action -->
+<div class="hero-unit" ng-show="Signed" ng-controller="MainCtrl">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#new" data-toggle="tab">New games</a></li>
+        <li><a href="#all" data-toggle="tab">All games</a></li>
+        <li><a href="#my" data-toggle="tab">My games</a></li>
+    </ul>
+
+    <div class="tab-content" ng-controller="GamesCtrl" data-ng-init="init()">
+    
+        <div class="tab-pane active" id="new">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Localization</th>
+                        <th>Time start</th>
+                        <th>Players</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-hide="newGames.length > 0">
+                        <td colspan="4">empty</td>
+                    </tr>
+                    <tr ng-repeat="game in newGames | orderBy: '-time_start'">
+                        <td>{{game.name}}</td>
+                        <td>{{game.localization.name}}</td>
+                        <td>{{game.time_start}}</td>
+                        <td>{{game.players_count}}/{{game.players_max}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="tab-pane" id="all">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Localization</th>
+                        <th>Time start</th>
+                        <th>Players</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-hide="allGames.length > 0">
+                        <td colspan="4">empty</td>
+                    </tr>
+                    <tr ng-repeat="game in allGames | orderBy: '-time_start'">
+                        <td>{{game.name}}</td>
+                        <td>{{game.localization.name}}</td>
+                        <td>{{game.time_start}}</td>
+                        <td>{{game.players_count}}/{{game.players_max}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="tab-pane" id="my">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Localization</th>
+                        <th>Time start</th>
+                        <th>Players</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-hide="myGames.length > 0">
+                        <td colspan="4">empty</td>
+                    </tr>
+                    <tr ng-repeat="game in myGames | orderBy: '-time_start'">
+                        <td>{{game.name}}</td>
+                        <td>{{game.localization.name}}</td>
+                        <td>{{game.time_start}}</td>
+                        <td>{{game.players_count}}/{{game.players_max}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

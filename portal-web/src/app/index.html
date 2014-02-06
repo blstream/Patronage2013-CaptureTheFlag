@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="wwwApp">
+<head>
+    <meta charset="utf-8">
+    <title>Capture The Flag</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+    
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css?v=4" rel="stylesheet">
+    <link href="css/datepicker.css" rel="stylesheet">
+</head>
+<body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="header-top-color-1"></div>
+        <div class="header-top-color-4"></div>
+        <div class="container">
+            <div class="header-top-color-2"></div>
+            <div class="header-top-color-3"></div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"><img src="images/logo-big-dark.png" alt="Capture The Flag"/></a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="#">Home</a></li>
+                <li class="dropdown" ng-show="Signed">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">Games <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li ng-show="Signed"><a href="#add_game">Add game</a></li>
+                        <li ng-show="Signed"><a href="#games">Show games</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="navbar-collapse" ng-controller="MainCtrl" ng-hide="Signed">
+                <form class="navbar-form navbar-right ng-valid ng-dirty" name="loginForm" ng-submit="SignIn()">
+                    <div class="form-group">
+                        <input type="text" class="form-control ng-valid ng-dirty" placeholder="Username" ng-model="username" name="username">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control ng-valid ng-dirty" placeholder="Password" ng-model="password" name="password">
+                    </div>
+                    <button type="submit" class="btn btn-success">Sign in</button>
+                </form>
+            </div>
+            <div class="nav-collapse usermanu-wrapper" ng-controller="MainCtrl" ng-show="Signed">
+                <div class="btn-group pull-right">
+                    <a class="btn btn-primary" href="#"><i class="icon-user icon-white"></i> Hi, {{userName}}</a> <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#/logout"><i class="icon-off"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--/.navbar-collapse -->
+        </div>
+    </div>
+    
+    <div class="container" ng-view></div>
+    
+    <footer></footer>
+
+    <script src="lib/jquery/jquery.js"></script>
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular/angular-resource.min.js"></script>
+    <script src="lib/angular/angular-cookies.min.js"></script>
+    <script src="lib/bootstrap/bootstrap.min.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers.js"></script>
+    <script src="js/filters.js"></script>
+    <script src="js/services.js"></script>
+    
+    <script src="lib/bootstrap/bootstrap-datepicker.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    
+</body>
+</html>

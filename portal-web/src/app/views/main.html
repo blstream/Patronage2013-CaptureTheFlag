@@ -1,0 +1,25 @@
+<!-- Main hero unit for a primary marketing message or call to action -->
+<div class="container" ng-hide="Signed">
+	<div class="row">
+            
+		<form class="ng-valid ng-dirty form-register" name="loginForm" ng-submit="RegisterUser()">
+            <h2>Register</h2>
+			<input class="form-control ng-valid ng-dirty login" type="text" required class="input-block-level" placeholder="login" ng-model="r_username" name="username">
+			<input class="form-control ng-valid ng-dirty passwd" type="password" required class="input-block-level" placeholder="hasło" ng-model="r_password" name="password">
+			<input class="form-control ng-valid ng-dirty passwd2" type="password" required class="input-block-level" placeholder="hasło" ng-model="r_password2" name="password">
+												
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Zarejestruj</button>
+        </form>
+
+    </div>
+</div>
+
+<div class="container" ng-show="Signed">
+    <div class="jumbotron">
+        <h1>Capture the Flag</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed rutrum imperdiet erat sed viverra. Nulla quis est tellus. Nam pellentesque neque at venenatis convallis. Sed nec mollis augue. Proin dignissim justo at risus posuere, ac auctor elit tristique. Fusce eu mattis erat. Praesent dui justo, auctor ut interdum non, fringilla sed metus. Proin elementum luctus augue, quis hendrerit tortor porta eu. Nam at mi vehicula, laoreet velit elementum, suscipit mi. Aenean aliquam dapibus nunc, id semper sapien convallis vel. Pellentesque venenatis, urna eget pulvinar volutpat, ante lectus sollicitudin nibh, id consequat lacus risus eu velit. Vivamus sed justo augue. Proin scelerisque elit non enim faucibus, eget suscipit risus tempor. </p>
+        <p>
+          <a role="button" href="#add_game" class="btn btn-lg btn-default">Create game »</a>
+        </p>
+      </div>
+</div>
